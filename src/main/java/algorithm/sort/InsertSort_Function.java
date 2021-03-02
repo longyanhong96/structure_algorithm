@@ -72,8 +72,8 @@ public class InsertSort_Function {
         }
     }
 
-    // ...j...i
-    private static void insertSort(int[] arr) {
+    // ...j...i，我的
+    public static void insertSort(int[] arr) {
         int length = arr.length;
         for (int i = 0; i < length; i++) {
             int sourceNum = arr[i];
@@ -92,6 +92,24 @@ public class InsertSort_Function {
                 }
             }
         }
+    }
 
+    /**
+     * 这一个方法，主要是比较i-1和i，如果i小于i-1，就开始一个一个比较，往前面移动，这样比我的少了很多次比较
+     * ...i-1 i
+     * @param arr
+     */
+    public static void insertSort_atguigu(int[] arr){
+        int length = arr.length;
+        for (int i = 1; i < length; i++) {
+            int insertVal = arr[i];
+            int insertIndex = i - 1;
+
+            while (insertIndex >= 0 && insertVal < arr[insertIndex]){
+                arr[insertIndex+1] = arr[insertIndex];
+                insertIndex--;
+            }
+            arr[insertIndex+1]=insertVal;
+        }
     }
 }

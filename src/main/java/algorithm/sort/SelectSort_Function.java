@@ -28,7 +28,7 @@ public class SelectSort_Function {
         MyCommonUtil.prinitArr(arr);
     }
 
-    private static void selectSort(int[] arr) {
+    public static void selectSort(int[] arr) {
         int length = arr.length;
         for (int i = 0; i < length; i++) {
             int sourceNum = arr[i];

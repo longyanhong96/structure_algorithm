@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.recursion;
 
 import org.apache.commons.lang3.StringUtils;
 
