@@ -14,7 +14,8 @@ public class QuickSort_Function {
 //        int[] arr = {6, -1, 0, -2, -5, 0, -1, 2, -4, -5};
         int[] arr = {0, -1, 0, -2, 1, 0, 2, 3};
 
-        quickSort_atguigu(arr, 0, arr.length - 1);
+//        quickSort_atguigu(arr, 0, arr.length - 1);
+        quickSortLegth(arr, 0, arr.length - 1);
 //        quickSort(arr, 0, arr.length - 1);
 
         System.out.println(Arrays.toString(arr));
@@ -144,4 +145,51 @@ public class QuickSort_Function {
 //        quickSort(arr, j+1, high);
     }
 
+
+    private static void quickSortLegth(int[] arr, int leftIndex, int rightIndex) {
+        int leftposition = leftIndex;
+        int rightposition = rightIndex;
+
+        int midTmp = arr[leftposition];
+
+        while (rightposition > leftposition) {
+            // 寻找左边大于 midVal的数，做交换
+            while (arr[leftposition] < midTmp) {
+                leftposition++;
+            }
+
+            while (arr[rightposition] > midTmp) {
+                rightposition--;
+            }
+
+            if (leftposition >= rightposition) {
+                break;
+            }
+
+            int tmp = arr[leftposition];
+            arr[leftposition] = arr[rightposition];
+            arr[rightposition] = tmp;
+
+            if (arr[leftposition] == midTmp) {
+                rightposition--;
+            }
+
+            if (arr[rightposition] == midTmp) {
+                leftposition++;
+            }
+        }
+
+        System.out.println("leftposition = " + leftposition);
+        System.out.println("rightposition = " + rightposition);
+        System.out.println("leftIndex = " + leftIndex);
+        System.out.println("rightIndex = " + rightIndex);
+
+        if (leftIndex < rightposition) {
+            quickSortLegth(arr, leftIndex, leftposition - 1);
+        }
+
+        if (rightIndex > leftposition) {
+            quickSortLegth(arr, rightposition + 1, rightIndex);
+        }
+    }
 }

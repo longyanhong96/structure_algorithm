@@ -23,7 +23,7 @@ public class ShellSort_Function {
 
 
     public static void main(String[] args) {
-        int[] arr1 = {2,3,4,5,6,1};
+//        int[] arr = {2,3,4,5,6,1};
         int[] arr = {8, 9, 1, 7, 2, 3, 5, 4, 6, 0};
 
         shellSort(arr);
@@ -65,7 +65,7 @@ public class ShellSort_Function {
     public static void shellSort(int[] arr) {
         int length = arr.length;
         int interval = length / 2;
-//        int count = 1;
+        int count = 1;
         while (interval > 0) {
             for (int i = 0; i < length; i++) {
                 int insertVal = arr[i];
@@ -77,9 +77,10 @@ public class ShellSort_Function {
                 }
                 arr[insertIndex + interval] = insertVal;
             }
-//            System.out.println("第" + count + "次排序结果：");
-//            MyCommonUtil.prinitArr(arr);
-//            count++;
+            System.out.print("第" + count + "次排序结果：");
+            MyCommonUtil.prinitArr(arr);
+            System.out.println();
+            count++;
             interval /= 2;
         }
     }
