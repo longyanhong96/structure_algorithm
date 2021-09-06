@@ -1,4 +1,4 @@
-package structure.tree.binarytree;
+package structure.atguigu.tree.binarytree;
 
 import lombok.Data;
 

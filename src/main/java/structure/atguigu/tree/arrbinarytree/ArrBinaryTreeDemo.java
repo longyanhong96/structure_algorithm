@@ -1,4 +1,4 @@
-package structure.tree.arrbinarytree;
+package structure.atguigu.tree.arrbinarytree;
 
 /**
  * @author longyh
