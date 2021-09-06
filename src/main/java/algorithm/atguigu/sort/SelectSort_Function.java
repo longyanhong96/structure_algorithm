@@ -1,4 +1,4 @@
-package algorithm.sort;
+package algorithm.atguigu.sort;
 
 import util.MyCommonUtil;
 

@@ -1,4 +1,4 @@
-package algorithm.recursion;
+package algorithm.atguigu.recursion;
 
 import org.apache.commons.lang3.StringUtils;
 

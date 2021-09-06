@@ -1,4 +1,4 @@
-package algorithm.recursion;
+package algorithm.atguigu.recursion;
 
 import java.util.*;
 
