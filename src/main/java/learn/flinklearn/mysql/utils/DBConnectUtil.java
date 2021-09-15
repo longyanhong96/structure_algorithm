@@ -87,6 +87,11 @@ public class DBConnectUtil {
         }
     }
 
+    public static boolean sqlExecute(JSONObject data, String database, String table, PreparedStatement iStmt) throws SQLException{
+        String sql = DBConnectUtil.parseSqlByData(data.keySet(), database, table);
+        DBConnectUtil.setValue(sql, data, iStmt);
+        return iStmt.execute();
+    }
 
     public static String parseSqlByData(Set<String> keySet, String database, String table) {
 
@@ -105,17 +110,17 @@ public class DBConnectUtil {
             buffer2.append("`").append(key).append("` = VALUES(`").append(key).append("`)").append(",");
         });
 
-        buffer1.deleteCharAt(buffer1.length()-1).append(")");
-        buffer2.deleteCharAt(buffer2.length()-1);
-        sqlBuffer.deleteCharAt(sqlBuffer.length()-1).append(")").append(buffer1).append(buffer2);
+        buffer1.deleteCharAt(buffer1.length() - 1).append(")");
+        buffer2.deleteCharAt(buffer2.length() - 1);
+        sqlBuffer.deleteCharAt(sqlBuffer.length() - 1).append(")").append(buffer1).append(buffer2);
         return sqlBuffer.toString();
     }
 
-    public static void setValue(String sql, JSONObject data, PreparedStatement iStmt){
+    public static void setValue(String sql, JSONObject data, PreparedStatement iStmt) throws SQLException {
         Set<String> keySet = data.keySet();
         int off = 1;
-        keySet.forEach(key -> {
-//            connection.
-        });
+        for (String key : keySet) {
+            iStmt.setObject(off, data.get(key));
+        }
     }
 }

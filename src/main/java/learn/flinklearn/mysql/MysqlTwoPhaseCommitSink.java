@@ -2,10 +2,16 @@ package learn.flinklearn.mysql;
 
 import com.alibaba.fastjson.JSONObject;
 import learn.flinklearn.mysql.utils.DBConnectUtil;
+import lombok.Data;
+import lombok.extern.log4j.Log4j;
 import org.apache.flink.api.common.typeutils.TypeSerializer;
 import org.apache.flink.streaming.api.functions.sink.TwoPhaseCommitSinkFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,11 +22,17 @@ import java.util.Set;
  * @analysis:
  * @date 2021/9/15 3:30 下午
  */
+
 public class MysqlTwoPhaseCommitSink extends TwoPhaseCommitSinkFunction<String, Connection, Void> {
+
+    private static final Logger logger = LoggerFactory.getLogger(MysqlTwoPhaseCommitSink.class);
+
 
     // 传一个配置内容，需要写入的database和table
     private volatile List<String> databases;
     private volatile List<String> tables;
+
+    private volatile PreparedStatement iStmt;
 
     public MysqlTwoPhaseCommitSink(TypeSerializer<Connection> transactionSerializer, TypeSerializer<Void> contextSerializer) {
         super(transactionSerializer, contextSerializer);
@@ -36,19 +48,24 @@ public class MysqlTwoPhaseCommitSink extends TwoPhaseCommitSinkFunction<String, 
 
         if (databases.contains(database) && tables.contains(table)) {
             JSONObject afterDataJson = sourceData.getJSONObject(Constants.AFTERDATA);
-            switch (operation) {
-                case Constants.INSERT:
-                    String sql = DBConnectUtil.parseSqlByData(afterDataJson.keySet(), database, table);
-                    
-                    break;
-                case Constants.DELETE:
-                    break;
-                case Constants.UPDATE:
-                    break;
-                case Constants.READ:
-                    break;
-                default:
-                    break;
+            try {
+                switch (operation) {
+                    case Constants.INSERT:
+                        DBConnectUtil.sqlExecute(afterDataJson, database, table, iStmt);
+                        break;
+                    case Constants.DELETE:
+                        break;
+                    case Constants.UPDATE:
+                        DBConnectUtil.sqlExecute(afterDataJson, database, table, iStmt);
+                        break;
+                    case Constants.READ:
+                        DBConnectUtil.sqlExecute(afterDataJson, database, table, iStmt);
+                        break;
+                    default:
+                        break;
+                }
+            } catch (SQLException e) {
+                logger.error("operation:{}", operation, e);
             }
         }
 
