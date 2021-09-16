@@ -1,6 +1,7 @@
 package learn.flinklearn.mysql.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import learn.flinklearn.mysql.Constants;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -49,9 +50,10 @@ public class DBConnectUtil {
                 conn.commit();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                close(conn);
             }
+//            finally {
+//                close(conn);
+//            }
         }
     }
 
@@ -66,9 +68,10 @@ public class DBConnectUtil {
                 conn.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                close(conn);
             }
+//            finally {
+//                close(conn);
+//            }
         }
     }
 
@@ -87,13 +90,32 @@ public class DBConnectUtil {
         }
     }
 
-    public static boolean sqlExecute(JSONObject data, String database, String table, PreparedStatement iStmt) throws SQLException{
-        String sql = DBConnectUtil.parseSqlByData(data.keySet(), database, table);
-        DBConnectUtil.setValue(sql, data, iStmt);
-        return iStmt.execute();
+    public static boolean sqlExecute(JSONObject data, String database, String table, Connection connection, String op) throws SQLException {
+        if (op.equals(Constants.DELETE)) {
+            String sql = parseDeleteSql(data.keySet(), database, table);
+            PreparedStatement deleteState = connection.prepareStatement(sql);
+            setValue(data, deleteState);
+            return deleteState.execute();
+        } else {
+            String sql = DBConnectUtil.parseSql(data.keySet(), database, table);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            setValue(data, preparedStatement);
+            boolean flag = preparedStatement.execute();
+            return flag;
+        }
     }
 
-    public static String parseSqlByData(Set<String> keySet, String database, String table) {
+    private static String parseDeleteSql(Set<String> keySet, String database, String table) {
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("delete from ").append(database).append(".").append(table).append(" where ");
+        keySet.forEach(key -> {
+            sqlBuffer.append(key).append("=? ").append("and");
+        });
+        sqlBuffer.deleteCharAt(sqlBuffer.length() - 1);
+        return sqlBuffer.toString();
+    }
+
+    public static String parseSql(Set<String> keySet, String database, String table) {
 
         StringBuffer sqlBuffer = new StringBuffer();
 
@@ -116,11 +138,12 @@ public class DBConnectUtil {
         return sqlBuffer.toString();
     }
 
-    public static void setValue(String sql, JSONObject data, PreparedStatement iStmt) throws SQLException {
+    public static void setValue(JSONObject data, PreparedStatement preparedStatement) throws SQLException {
         Set<String> keySet = data.keySet();
         int off = 1;
         for (String key : keySet) {
-            iStmt.setObject(off, data.get(key));
+            preparedStatement.setObject(off, data.get(key));
+            off++;
         }
     }
 }

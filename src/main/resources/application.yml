@@ -1,0 +1,12 @@
+mysql:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://81.71.149.77:3306/test_cdc?characterEncoding=UTF-8&useSSL=false
+  username: root
+  password: "123456"
+kafka:
+  bootstrapServers: 192.168.107.129:9092
+  groupId: flink01
+  keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+  valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+  autoOffsetReset: earliest
+  kafkatopic: test_cdc_mysql1,test_cdc_mysql2
