@@ -104,6 +104,7 @@ public class NebulaVertexEdgeBatchOutputFormat<T> extends RichOutputFormat<T> im
         });
     }
 
+    // 这里无法做到先处理点，后处理边；这个要在数据处理的时候；做一个先把点的数据先处理后面再处理边
     @Override
     public void writeRecord(T t) throws IOException {
         if (t instanceof Tuple2) {
