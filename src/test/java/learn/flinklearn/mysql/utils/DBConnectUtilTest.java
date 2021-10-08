@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.fastjson.JSONObject;
 import junit.framework.TestCase;
 import learn.flinklearn.mysql.Constants;
+import learn.flinklearn.utils.YamlUtil;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -21,7 +22,7 @@ public class DBConnectUtilTest extends TestCase {
 
     public void testParseSqlByData() {
         JSONObject jsonObject = JSONObject.parseObject(data);
-        String sql = DBConnectUtil.parseSql(jsonObject.keySet(), "a", "q");
+        String sql = DBConnectUtil.parseSql(jsonObject.keySet(), "test_cdc", "user");
         System.out.println("sql = " + sql);
     }
 
@@ -44,5 +45,11 @@ public class DBConnectUtilTest extends TestCase {
         connection.commit();
 
 
+    }
+
+    public void testDeleted() throws Exception{
+        String dt = "{\"id\":\"202\"}";
+        String sql = DBConnectUtil.parseDeleteSql(JSONObject.parseObject(dt).keySet(), "test_cdc", "user");
+        System.out.println("sql = " + sql);
     }
 }

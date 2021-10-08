@@ -1,4 +1,4 @@
-package learn.flinklearn.mysql.utils;
+package learn.flinklearn.utils;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -33,6 +33,10 @@ public class YamlUtil {
     public void initWithString(String content) {
         Yaml yaml = new Yaml();
         properties = yaml.loadAs(content, Map.class);
+    }
+
+    public String getValueByKey(String key){
+       return getValueByKey(key,"");
     }
 
     public <T> T getValueByKey(String key, T defaultValue) {

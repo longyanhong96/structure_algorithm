@@ -9,6 +9,14 @@ import junit.framework.TestCase;
  * @date 2021/9/6 5:55 下午
  */
 public class DataLinkListTest extends TestCase {
+    public static DataLinkList<String> linkList;
+    static {
+        linkList = new DataLinkList<>();
+        linkList.add("a");
+        linkList.add("b");
+        linkList.add("c");
+        linkList.add("d");
+    }
 
     public void testAdd() {
         DataLinkList<String> linkList = new DataLinkList<>();
@@ -31,5 +39,11 @@ public class DataLinkListTest extends TestCase {
         linkList.add("d");
 
         System.out.println("linkList.find(\"e\") = " + linkList.find("e"));
+    }
+
+    public void testRemove(){
+        linkList.remove("g");
+
+        linkList.listAll();
     }
 }

@@ -50,10 +50,9 @@ public class DBConnectUtil {
                 conn.commit();
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                close(conn);
             }
-//            finally {
-//                close(conn);
-//            }
         }
     }
 
@@ -68,10 +67,9 @@ public class DBConnectUtil {
                 conn.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                close(conn);
             }
-//            finally {
-//                close(conn);
-//            }
         }
     }
 
@@ -105,13 +103,14 @@ public class DBConnectUtil {
         }
     }
 
-    private static String parseDeleteSql(Set<String> keySet, String database, String table) {
+    public static String parseDeleteSql(Set<String> keySet, String database, String table) {
         StringBuffer sqlBuffer = new StringBuffer();
         sqlBuffer.append("delete from ").append(database).append(".").append(table).append(" where ");
         keySet.forEach(key -> {
             sqlBuffer.append(key).append("=? ").append("and");
         });
-        sqlBuffer.deleteCharAt(sqlBuffer.length() - 1);
+        sqlBuffer.delete(sqlBuffer.length() - 3,sqlBuffer.length());
+//        sqlBuffer.deleteCharAt(sqlBuffer.length() - 3);
         return sqlBuffer.toString();
     }
 

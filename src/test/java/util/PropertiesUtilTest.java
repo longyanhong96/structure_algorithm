@@ -13,7 +13,7 @@ import java.util.Properties;
 public class PropertiesUtilTest extends TestCase {
 
     public void testGetProperties() {
-        Properties properties = PropertiesUtil.getProperties("E:\\workspace\\mystudy\\structure_algorithm\\src\\main\\resources\\kafkaproducer.properties");
+        Properties properties = PropertiesUtil.getProperties("/Users/mininglamp/Documents/learn/code/structure_algorithm/src/main/resources/kafkaproducer.properties");
         System.out.println("properties = " + properties);
     }
 }

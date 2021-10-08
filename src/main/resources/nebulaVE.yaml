@@ -1,0 +1,58 @@
+### nebula vertex edge的配置文件
+nebulaTag:
+  - tagName: player
+    idIndex: 0
+    fieldNameList:
+      - name
+      - age
+    positionList:
+      - 1
+      - 2
+    batchSize: 2
+    rowFieldNameList:
+      - name
+      - age
+  - tagName: team
+    idIndex: 0
+    fieldNameList:
+      - name
+    positionList:
+      - 1
+    batchSize: 2
+    rowFieldNameList:
+      - name
+nebulaEdge:
+  - edgeName: follow
+    srcIndex: 0
+    dstIndex: 1
+    rankIndex: 2
+    fieldNameList:
+      - name
+      - age
+    positionList:
+      - 1
+      - 2
+    batchSize: 2
+    rowFieldNameList:
+      - name
+      - age
+  - edgeName: friend
+    srcIndex: 0
+    dstIndex: 1
+    rankIndex: 2
+    fieldNameList:
+      - src
+      - dst
+      - degree
+      - start
+    positionList:
+      - 0
+      - 1
+      - 3
+      - 4
+    batchSize: 2
+    rowFieldNameList:
+      - src
+      - dst
+      - degree
+      - start

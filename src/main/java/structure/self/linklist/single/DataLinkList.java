@@ -1,5 +1,7 @@
 package structure.self.linklist.single;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author longyh
  * @Description:
@@ -28,7 +30,12 @@ public class DataLinkList<T> implements LinkList<T> {
 
     @Override
     public void remove(T t) {
-
+        if (first.self == t) {
+            DataNode<T> firstNextNode = first.nextNode;
+            first = firstNextNode;
+        } else {
+            first.nextNode.remove(t);
+        }
     }
 
     @Override
@@ -58,8 +65,14 @@ public class DataLinkList<T> implements LinkList<T> {
             this.nextNode = dataNode;
         }
 
-        public void remove(DataNode<T> dataNode) {
-
+        public void remove(T t) {
+            if (self == t) {
+                preNode.nextNode = nextNode;
+            } else {
+                if (nextNode != null) {
+                    nextNode.remove(t);
+                }
+            }
         }
 
         public T find(T t) {
@@ -68,7 +81,7 @@ public class DataLinkList<T> implements LinkList<T> {
             } else {
                 if (nextNode != null) {
                     return nextNode.find(t);
-                }else{
+                } else {
                     return null;
                 }
             }

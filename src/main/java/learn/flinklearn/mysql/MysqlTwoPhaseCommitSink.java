@@ -17,8 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author longyh
@@ -60,16 +63,16 @@ public class MysqlTwoPhaseCommitSink extends TwoPhaseCommitSinkFunction<ObjectNo
             boolean flag = false;
             switch (operation) {
                 case Constants.INSERT:
-                    flag = DBConnectUtil.sqlExecute(afterDataJson, database, table, connection, operation);
+                    flag = sqlExecute(afterDataJson, database, table, connection, operation);
                     break;
                 case Constants.DELETE:
-                    flag = DBConnectUtil.sqlExecute(JSONObject.parseObject(indexData), database, table, connection, operation);
+                    flag = sqlExecute(JSONObject.parseObject(indexData), database, table, connection, operation);
                     break;
                 case Constants.UPDATE:
-                    flag = DBConnectUtil.sqlExecute(afterDataJson, database, table, connection, operation);
+                    flag = sqlExecute(afterDataJson, database, table, connection, operation);
                     break;
                 case Constants.READ:
-                    flag = DBConnectUtil.sqlExecute(afterDataJson, database, table, connection, operation);
+                    flag = sqlExecute(afterDataJson, database, table, connection, operation);
                     break;
                 default:
                     logger.error("operation is worn;operation:{}", operation);
@@ -104,6 +107,63 @@ public class MysqlTwoPhaseCommitSink extends TwoPhaseCommitSinkFunction<ObjectNo
     protected void abort(Connection connection) {
         logger.debug("=====> rollback... " + connection);
         DBConnectUtil.rollback(connection);
+    }
+
+    private boolean sqlExecute(JSONObject data, String database, String table, Connection connection, String op) throws SQLException {
+        if (op.equals(Constants.DELETE)) {
+            String sql = parseDeleteSql(data.keySet(), database, table);
+            PreparedStatement deleteState = connection.prepareStatement(sql);
+            setValue(data, deleteState);
+            return deleteState.execute();
+        } else {
+            String sql = parseSql(data.keySet(), database, table);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            setValue(data, preparedStatement);
+            boolean flag = preparedStatement.execute();
+            return flag;
+        }
+    }
+
+    private String parseDeleteSql(Set<String> keySet, String database, String table) {
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("delete from ").append(database).append(".").append(table).append(" where ");
+        keySet.forEach(key -> {
+            sqlBuffer.append(key).append("=? ").append("and");
+        });
+        sqlBuffer.deleteCharAt(sqlBuffer.length() - 1);
+        return sqlBuffer.toString();
+    }
+
+    private String parseSql(Set<String> keySet, String database, String table) {
+
+        StringBuffer sqlBuffer = new StringBuffer();
+
+        StringBuffer buffer1 = new StringBuffer();
+        buffer1.append(" VALUES (");
+
+        StringBuffer buffer2 = new StringBuffer();
+        buffer2.append(" ON DUPLICATE KEY UPDATE ");
+
+        sqlBuffer.append("INSERT INTO ").append(database).append(".").append(table).append(" (");
+        keySet.forEach(key -> {
+            sqlBuffer.append("`").append(key).append("`").append(",");
+            buffer1.append("?").append(",");
+            buffer2.append("`").append(key).append("` = VALUES(`").append(key).append("`)").append(",");
+        });
+
+        buffer1.deleteCharAt(buffer1.length() - 1).append(")");
+        buffer2.deleteCharAt(buffer2.length() - 1);
+        sqlBuffer.deleteCharAt(sqlBuffer.length() - 1).append(")").append(buffer1).append(buffer2);
+        return sqlBuffer.toString();
+    }
+
+    private void setValue(JSONObject data, PreparedStatement preparedStatement) throws SQLException {
+        Set<String> keySet = data.keySet();
+        int off = 1;
+        for (String key : keySet) {
+            preparedStatement.setObject(off, data.get(key));
+            off++;
+        }
     }
 
 }
