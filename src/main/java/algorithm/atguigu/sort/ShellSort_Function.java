@@ -77,9 +77,6 @@ public class ShellSort_Function {
                 }
                 arr[insertIndex + interval] = insertVal;
             }
-            System.out.print("第" + count + "次排序结果：");
-            MyCommonUtil.prinitArr(arr);
-            System.out.println();
             count++;
             interval /= 2;
         }
