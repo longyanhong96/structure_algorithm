@@ -1,5 +1,6 @@
 package algorithm.atguigu.sort;
 
+import algorithm.self.sort.ShellSort;
 import util.MyCommonUtil;
 
 /**
@@ -14,15 +15,15 @@ public class TimeStatistics {
         long startTime;
         long endTime;
 
-        startTime = System.currentTimeMillis();
-        SelectSort_Function.selectSort(MyCommonUtil.getArr(100000));
-        endTime = System.currentTimeMillis();
-        System.out.println("选择排序排序所需要时长：" + (endTime - startTime));
-
-        startTime = System.currentTimeMillis();
-        BubbleSort_Function.bubbleSort(MyCommonUtil.getArr(100000));
-        endTime = System.currentTimeMillis();
-        System.out.println("冒泡排序所需要时长：" + (endTime - startTime));
+//        startTime = System.currentTimeMillis();
+//        SelectSort_Function.selectSort(MyCommonUtil.getArr(100000));
+//        endTime = System.currentTimeMillis();
+//        System.out.println("选择排序排序所需要时长：" + (endTime - startTime));
+//
+//        startTime = System.currentTimeMillis();
+//        BubbleSort_Function.bubbleSort(MyCommonUtil.getArr(100000));
+//        endTime = System.currentTimeMillis();
+//        System.out.println("冒泡排序所需要时长：" + (endTime - startTime));
 
         startTime = System.currentTimeMillis();
         InsertSort_Function.insertSort_atguigu(MyCommonUtil.getArr(100000));
@@ -33,5 +34,10 @@ public class TimeStatistics {
         ShellSort_Function.shellSort(MyCommonUtil.getArr(100000));
         endTime = System.currentTimeMillis();
         System.out.println("希尔排序所需要时长：" + (endTime - startTime));
+
+        startTime = System.currentTimeMillis();
+        ShellSort.sort(MyCommonUtil.getArr(100000));
+        endTime = System.currentTimeMillis();
+        System.out.println("我写的希尔排序所需要时长：" + (endTime - startTime));
     }
 }

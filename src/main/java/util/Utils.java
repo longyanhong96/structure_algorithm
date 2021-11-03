@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author longyh
@@ -18,7 +18,7 @@ import java.util.Date;
 public class Utils {
 
     public static void main(String[] args) throws ParseException {
-        String time="20210926";
+        String time="20201001";
         String dateFlag = getHoliday(time);
         if ("1".equals(dateFlag) || "2".equals(dateFlag)) {
             System.err.println("今天是法定节假日");
@@ -27,8 +27,9 @@ public class Utils {
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = dateFormat.parse("1594714494");
-        System.out.println("date = " + date);
+
+        String format = dateFormat.format(new Date(1594714494000L));
+        System.out.println("date = " + format);
     }
 
     public static  String  getHoliday(String  time) {

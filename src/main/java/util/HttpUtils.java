@@ -24,7 +24,7 @@ public class HttpUtils {
 
     public static void main(String[] args) {
         String httpUrl = "http://www.easybots.cn/api/holiday.php";
-        httpUrl = httpUrl + "?d=" + "20211021";
+        httpUrl = httpUrl + "?d=" + "20211001";
         String s = null;
         try {
             s = doGet(httpUrl, null, null);
