@@ -8,27 +8,6 @@ import java.util.Map;
  * @Date 2022/8/31 10:02
  */
 public class Solution {
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-//        boolean happy = solution.isSubsequence("axc", "ahbgdc");
-//        System.out.println("happy = " + happy);
-
-//        char[] chars = {'a', 'a', 'b', 'b', 'c', 'c', 'c'};
-//        int compress = solution.compress(chars);
-//        System.out.println("compress = " + compress);
-//        System.out.println(Arrays.toString(chars));
-
-
-//        int[] nums1 = {0};
-//        solution.merge(nums1, 0, new int[]{1}, 1);
-//        System.out.println("Arrays.toString(nums1) = " + Arrays.toString(nums1));
-
-//        boolean words = solution.validPalindrome("abcdca");
-//        System.out.println("words = " + words);
-
-        boolean compare = solution.backspaceCompare("ab##", "c#d#");
-        System.out.println("compare = " + compare);
-    }
 
     public int[] twoSum(int[] nums, int target) {
         int i = 0, targetNum = 0;
@@ -231,4 +210,38 @@ public class Solution {
         }
         return true;
     }
+
+//    /**
+//     * 2000
+//     * @param word
+//     * @param ch
+//     * @return
+//     */
+//    public String reversePrefix(String word, char ch) {
+//        int end = 0;
+//        for (; end < word.length(); end++) {
+//            if (word.charAt(end) == ch) {
+//                break;
+//            }
+//        }
+//
+//        if (end == word.length()){
+//            return word;
+//        }
+//
+//        StringBuffer buffer = new StringBuffer();
+//        int start = 0;
+//        while (start < end){
+//
+//        }
+//    }
+
+//    public String addBinary(String a, String b) {
+//        int length1 = a.length();
+//        int length2 = b.length();
+//
+//
+//    }
+
+
 }
