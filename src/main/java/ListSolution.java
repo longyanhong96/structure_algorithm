@@ -158,8 +158,26 @@ public class ListSolution {
         return sum;
     }
 
+    // 575
+    public static int distributeCandies(int[] candyType) {
+        int slow = 0, fast = 0;
+        for (; fast < candyType.length; fast++) {
+            if (candyType[slow] != candyType[fast]) {
+                candyType[++slow] = candyType[fast];
+            }
+        }
+        int typeNum = slow + 1;
+        if (candyType.length / 2 >= typeNum) {
+            return typeNum;
+        } else {
+            return candyType.length / 2;
+        }
+    }
+
     public static void main(String[] args) {
-        int sum = arrayPairSum(new int[]{6,2,6,5,1,2});
-        System.out.println("sum = " + sum);
+        int[] arr = {1, 1, 2, 2, 3, 3};
+        int distributeCandies = distributeCandies(arr);
+        System.out.println(Arrays.toString(arr));
+        System.out.println("distributeCandies = " + distributeCandies);
     }
 }
